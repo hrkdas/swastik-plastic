@@ -229,7 +229,7 @@
       </div>
     </div>
     <div class="hero-visual reveal">
-      <div class="hero-fallback" style="background-image:url('assets/img/swastik-banner1.jpg')"></div>
+      <div class="hero-fallback" aria-hidden="true"></div>
       <canvas id="hero-canvas" class="hero-canvas"></canvas>
       <div class="hero-grid-overlay"></div>
       <div class="hero-readouts">
@@ -1249,8 +1249,8 @@
 <!-- Motion stack — CDN libs are optional; site degrades to CSS-only motion if blocked -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.42/bundled/lenis.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js" defer></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" defer></script>
+<script src="https://unpkg.com/three@0.158.0/build/three.min.js" defer></script>
 <script src="assets/js/motion.config.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 <script>

@@ -446,29 +446,54 @@
       fit();
       addEventListener('resize', fit);
 
+      // Procedural chrome environment (gradient sky → ground) for reflections
+      const pmrem = new THREE.PMREMGenerator(renderer);
+      const envScene = new THREE.Scene();
+      const envGeo = new THREE.SphereGeometry(50, 32, 16);
+      const envCanvas = document.createElement('canvas');
+      envCanvas.width = 256; envCanvas.height = 256;
+      const ectx = envCanvas.getContext('2d');
+      const grad = ectx.createLinearGradient(0, 0, 0, 256);
+      grad.addColorStop(0.00, '#f4f6f8');
+      grad.addColorStop(0.45, '#a8b0ba');
+      grad.addColorStop(0.55, '#3a4048');
+      grad.addColorStop(1.00, '#1a1d22');
+      ectx.fillStyle = grad; ectx.fillRect(0, 0, 256, 256);
+      // a few horizontal highlight bands → streaky chrome reflections
+      ectx.fillStyle = 'rgba(255,255,255,0.6)';
+      ectx.fillRect(0, 60, 256, 4);
+      ectx.fillStyle = 'rgba(255,255,255,0.3)';
+      ectx.fillRect(0, 110, 256, 2);
+      ectx.fillStyle = 'rgba(255,176,32,0.18)';
+      ectx.fillRect(0, 170, 256, 6);
+      const envTex = new THREE.CanvasTexture(envCanvas);
+      envTex.mapping = THREE.EquirectangularReflectionMapping;
+      const envMap = pmrem.fromEquirectangular(envTex).texture;
+      scene.environment = envMap;
+
       // Group: torus knot (mould-like core) + outer wireframe icosahedron
       const group = new THREE.Group();
       const knotGeo = new THREE.TorusKnotGeometry(1.1, 0.32, 160, 24);
       const knotMat = new THREE.MeshStandardMaterial({
-        color: 0x9aa3ad, metalness: 0.85, roughness: 0.32,
-        emissive: 0xff8a00, emissiveIntensity: 0.05
+        color: 0xeef0f3, metalness: 1.0, roughness: 0.08,
+        envMap, envMapIntensity: 1.4
       });
       const knot = new THREE.Mesh(knotGeo, knotMat);
       group.add(knot);
 
       const wireGeo = new THREE.IcosahedronGeometry(2.2, 1);
-      const wireMat = new THREE.LineBasicMaterial({ color: 0xffb020, transparent: true, opacity: 0.32 });
+      const wireMat = new THREE.LineBasicMaterial({ color: 0xb8c0cc, transparent: true, opacity: 0.28 });
       const wire = new THREE.LineSegments(new THREE.WireframeGeometry(wireGeo), wireMat);
       group.add(wire);
 
       scene.add(group);
 
-      const dir = new THREE.DirectionalLight(0xffffff, 1.2);
+      const dir = new THREE.DirectionalLight(0xffffff, 1.4);
       dir.position.set(2, 3, 4);
       scene.add(dir);
-      const amb = new THREE.AmbientLight(0x4DA3FF, 0.4);
+      const amb = new THREE.AmbientLight(0xffffff, 0.5);
       scene.add(amb);
-      const pt = new THREE.PointLight(0xFFB020, 1.0, 10);
+      const pt = new THREE.PointLight(0xFFB020, 0.6, 10);
       pt.position.set(-3, -2, 3);
       scene.add(pt);
 
