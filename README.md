@@ -1,26 +1,89 @@
 # Swastik Plastic — Static Website
 
-Single-page marketing site + legal pages. Plain HTML/CSS/JS. Zero build step.
+Single-page marketing site + legal pages. Plain HTML/CSS/JS. Zero build step. Premium industrial-techno design language with WebGL hero, custom cursor, scroll-driven choreography and an interactive capability visualizer.
 
 ## Files
 
 ```
 .
-├── index.html          # main landing page
-├── privacy.html        # privacy policy
-├── terms.html          # terms of service
-├── cookies.html        # cookie policy
-├── thank-you.html      # form-submit landing
-├── 404.html            # not-found page
+├── index.html                  # main landing page (motion-rich)
+├── privacy.html                # privacy policy
+├── terms.html                  # terms of service
+├── cookies.html                # cookie policy
+├── thank-you.html              # form-submit landing
+├── 404.html                    # not-found page
 ├── robots.txt
 ├── sitemap.xml
-├── vercel.json         # Vercel deploy config (cleanUrls + 301s + security headers)
+├── vercel.json                 # Vercel deploy config
 ├── docs/
-│   └── content-seo-package.md   # full content / SEO / conversion package (master doc)
+│   └── content-seo-package.md  # SEO master doc
 └── assets/
-    ├── css/styles.css
-    ├── js/main.js
-    └── img/            # add factory photos here when available
+    ├── css/styles.css          # full design system + motion primitives
+    ├── js/motion.config.js     # easings, durations, stagger tokens (tune globally)
+    ├── js/main.js              # interactions, cursor, hero 3D, visualizer, etc.
+    └── img/                    # factory photos
+```
+
+## Motion stack (CDN)
+
+Loaded `defer` from `index.html`:
+
+| Lib            | Why                                                              |
+|----------------|------------------------------------------------------------------|
+| GSAP + ScrollTrigger | Pinned horizontal scroll (services), scroll-driven timelines |
+| Lenis          | Buttery momentum-smooth scroll                                   |
+| Three.js       | WebGL hero — wireframe mould geometry, scroll-tied rotation      |
+
+All libs are **optional** — if blocked, the page falls back to CSS-only motion (transitions + IO reveals + animations) without breaking.
+
+## Tuning motion globally
+
+`assets/js/motion.config.js` exposes a single `window.MOTION` token map. Change a value, every subsystem follows.
+
+```js
+window.MOTION = {
+  ease:    { out, inOut, inExpo, outQ, spring },  // CSS bezier strings
+  dur:     { micro, short, base, reveal, hero, page }, // seconds
+  stagger: { word, char, list, grid },
+  scroll:  { lerp, scrub },                       // Lenis + ScrollTrigger
+  cursor:  { lerp, magnetRadius, magnetStrength } // custom cursor + magnetic CTA
+};
+```
+
+## Disabling motion
+
+Three layers:
+
+1. **Per-user**: `prefers-reduced-motion: reduce` is honoured — preloader skipped, custom cursor hidden, marquees stopped, reveals collapsed to fade. No information lost.
+2. **Per-feature**: comment a single line in `main.js` `boot()` (e.g. `initHero3D()`, `initServicesPin()`).
+3. **Per-device**: the WebGL hero auto-degrades on low-end devices (≤4 GB RAM or ≤4 cores) to the static `assets/img/swastik-banner1.jpg` fallback baked behind the canvas.
+
+## Signature interactions
+
+- **Preloader** — counter 000→100, glyph spin, panel split-open. Runs once per session.
+- **Custom cursor** — 8px dot + 32px ring, lerp follow, magnetic CTAs, hover labels (`VIEW`, `DRAG`).
+- **Hero WebGL** — torus-knot mould + wireframe icosahedron, scroll-tied rotation, mouse parallax.
+- **Pinned services** — five panels scroll horizontally, GSAP `scrub: 1` smoothing.
+- **Capability visualizer** — three sliders (volume / complexity / material) recompute tonnage, cycle, cavities, lead time live; cavity grid morphs.
+- **Scroll path process** — amber pellet rides an SVG bezier, fills the trail behind, lights up stations as it passes.
+- **Drag carousel testimonials** — pointer-driven with momentum + auto-advance.
+- **Footer wordmark** — outlined SWASTIK PLASTIC paint-fills bottom-up on intersection.
+- **Easter eggs** — Konami code → blueprint mode (10s); 5×-click logo → year cycle 2005→present.
+
+## Deploy to Vercel
+
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+Or drag the folder onto https://vercel.com/new — framework = Other, output dir = `.`.
+
+## Local preview
+
+```bash
+python3 -m http.server 8080
+# open http://localhost:8080
 ```
 
 ## Deploy to Vercel
