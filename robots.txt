@@ -1,7 +1,8 @@
 User-agent: *
 Allow: /
-Disallow: /privacy.html
-Disallow: /terms.html
-Disallow: /cookies.html
+Disallow: /thank-you
+Disallow: /thank-you.html
+Disallow: /404
+Disallow: /404.html
 
 Sitemap: https://swastikplastic.co.in/sitemap.xml

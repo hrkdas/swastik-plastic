@@ -816,3 +816,50 @@ p { margin: 0 0 1em; color: var(--c-muted); }
 .cookie p { margin: 0 0 12px; font-size: .9rem; }
 .cookie .btns { display: flex; gap: 8px; }
 .cookie .btn { padding: 8px 14px; font-size: .85rem; }
+
+/* ============================================
+   Sticky mobile CTA bar (Call · WhatsApp · Quote)
+   ============================================ */
+.mobile-cta {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 90;
+  display: none;
+  background: var(--c-surface, #fff);
+  border-top: 1px solid var(--c-border, rgba(0,0,0,.1));
+  box-shadow: 0 -4px 16px rgba(0,0,0,.08);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.mobile-cta .mcta-item {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 4px;
+  min-height: 56px;
+  text-decoration: none;
+  color: var(--c-text, #0b0d10);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  border-right: 1px solid var(--c-border, rgba(0,0,0,.06));
+}
+.mobile-cta .mcta-item:last-child { border-right: none; }
+.mobile-cta .mcta-item svg {
+  width: 22px; height: 22px;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.mobile-cta .mcta-primary {
+  background: var(--c-accent, #ff6b1a);
+  color: #000;
+}
+.mobile-cta .mcta-item:active { background: rgba(0,0,0,.04); }
+.mobile-cta .mcta-primary:active { background: var(--c-accent, #ff6b1a); filter: brightness(.95); }
+
+@media (max-width: 768px) {
+  .mobile-cta { display: flex; }
+  .cookie { bottom: 78px; }
+  body { padding-bottom: 56px; }
+}
